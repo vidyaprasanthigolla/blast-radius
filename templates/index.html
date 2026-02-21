@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlastScope - Blast Radius Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar for Inputs -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <h1>BlastScope <span>&#x1F52D;</span></h1>
+                <p>AI Code Change Impact Analyzer</p>
+            </div>
+
+            <div class="input-group">
+                <label for="codebase-path">Codebase Path</label>
+                <!-- Default to demo_repo to make it easy to test -->
+                <input type="text" id="codebase-path" placeholder="/path/to/project" value="demo_repo">
+            </div>
+
+            <div class="input-group">
+                <label for="change-intent">Change Intent</label>
+                <textarea id="change-intent" rows="4"
+                    placeholder="e.g., Modify db_connector.py to add timeout...">Modify db_connector.py</textarea>
+            </div>
+
+            <button id="analyze-btn">Analyze Impact</button>
+
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p>Analyzing blast radius...</p>
+            </div>
+
+            <div id="error-message" class="error-msg hidden"></div>
+        </aside>
+
+        <!-- Main Content for Outputs -->
+        <main class="content">
+            <div class="top-section">
+                <div class="card graph-card">
+                    <h2>Dependency Graph</h2>
+                    <div id="cy" class="cy-container"></div>
+                </div>
+            </div>
+            <div class="bottom-section">
+                <div class="card report-card">
+                    <div class="report-header">
+                        <h2>Blast Radius Report</h2>
+                    </div>
+                    <div class="summary-stats">
+                        <div class="stat-box">
+                            <span class="stat-value" id="stat-total">0</span>
+                            <span class="stat-label">Total Impacted</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="stat-direct">0</span>
+                            <span class="stat-label">Direct Impact</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="stat-indirect">0</span>
+                            <span class="stat-label">Indirect Impact</span>
+                        </div>
+                    </div>
+                    <div id="impact-list" class="impact-list">
+                        <p class="placeholder-text">Run analysis to see impacted components.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
